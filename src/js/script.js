@@ -12,10 +12,27 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
     initSidebar();
     initBookClick();
+    initReadButtons();
     initCarousel();
     initCalendar();
     initAnimations();
+    registerServiceWorker();
 });
+
+/**
+ * Register Service Worker for offline functionality
+ */
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then((registration) => {
+                console.log('✅ Service Worker registrado:', registration.scope);
+            })
+            .catch((error) => {
+                console.log('❌ Error al registrar Service Worker:', error);
+            });
+    }
+}
 
 /**
  * Login Functionality
@@ -223,6 +240,21 @@ function initBookClick() {
                 mainBookCard.style.transform = '';
                 // Switch to page 2 (book details)
                 switchPage(2);
+            }, 150);
+        });
+    }
+
+    // Christmas gift card click handler
+    const christmasGiftCard = document.getElementById('christmasGiftCard');
+    if (christmasGiftCard) {
+        christmasGiftCard.addEventListener('click', () => {
+            // Add click animation
+            christmasGiftCard.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                christmasGiftCard.style.transform = '';
+                // Hide all pages and show gift details
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.getElementById('giftDetailsPage').classList.add('active');
             }, 150);
         });
     }
@@ -645,5 +677,26 @@ startReadingBtns.forEach(btn => {
         }, 1500);
     });
 });
+
+/**
+ * Initialize read buttons to open PDF reader
+ */
+function initReadButtons() {
+    // All "Start reading" and "Continue reading" buttons
+    const readButtons = document.querySelectorAll('.btn-primary, .btn-secondary');
+
+    readButtons.forEach(btn => {
+        const buttonText = btn.textContent.toLowerCase();
+        if (buttonText.includes('leer') || buttonText.includes('reading')) {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Open the PDF reader (function from pdf-reader.js)
+                if (typeof openReader === 'function') {
+                    openReader();
+                }
+            });
+        }
+    });
+}
 
 console.log('📚 BookShelf App initialized successfully!');

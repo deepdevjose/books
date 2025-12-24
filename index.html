@@ -12,6 +12,13 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="src/css/styles.css">
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#c17f59">
+    <link rel="icon" type="image/png" href="src/assets/book.png">
+    <link rel="apple-touch-icon" href="src/assets/book.png">
+    <!-- PDF.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 
 <body>
@@ -178,23 +185,31 @@
                     <div class="books-carousel">
                         <div class="book-card featured" id="mainBookCard" style="cursor: pointer;">
                             <div class="book-cover">
-                                <img src="src/assets/bookiseeyoureyes.png" alt="I See Your Eyes">
+                                <img src="src/books/iseeyoureyes/frontiseeyoureyes.png" alt="Lo Que Vi En Tus Ojos">
                             </div>
                             <h4>Lo Que Vi En Tus Ojos</h4>
                         </div>
+                        <!-- Christmas Gift Card -->
+                        <div class="book-card gift-card christmas" id="christmasGiftCard" style="cursor: pointer;">
+                            <div class="book-cover gift-cover">
+                                <div class="christmas-glow"></div>
+                                <img src="src/assets/picturegift.png" alt="Regalo de Navidad">
+                                <div class="gift-ribbon">🎄</div>
+                            </div>
+                            <h4>🎁 Feliz Navidad 🎄</h4>
+                        </div>
                     </div>
                     <div class="carousel-footer">
-                        <p class="collection-notice">
+                        <p class="collection-notice christmas-notice">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="10" />
                                 <line x1="12" y1="8" x2="12" y2="12" />
                                 <line x1="12" y1="16" x2="12.01" y2="16" />
                             </svg>
-                            Pronto verás un<a href="#">nuevo libro.</a> ¡Es una lectura obligada,
-                            no te lo vayas a perder amorcito!
+                            ¡Feliz Navidad mi amor! 🎅 Este regalo es especial para ti...
                         </p>
                         <div class="book-counter">
-                            <span class="current">01</span> / 1 libros
+                            <span class="current">02</span> / 2 items
                         </div>
                     </div>
                 </div>
@@ -219,10 +234,10 @@
                         <div class="new-series">
                             <h3>Nueva Colección</h3>
                             <div class="series-item">
-                                <img src="src/assets/bookiseeyoureyes.png" alt="I See Your Eyes">
+                                <img src="src/books/iseeyoureyes/frontiseeyoureyes.png" alt="Lo Que Vi En Tus Ojos">
                                 <div class="series-info">
                                     <h4>Lo Que Vi En Tus Ojos</h4>
-                                    <span>1 capítulo</span>
+                                    <span>9 capítulos</span>
                                 </div>
                                 <span class="vol-count">1 vol</span>
                             </div>
@@ -233,7 +248,7 @@
                         <!-- Current Book -->
                         <div class="current-book-card">
                             <div class="book-3d">
-                                <img src="src/assets/bookiseeyoureyes.png" alt="I See Your Eyes">
+                                <img src="src/books/iseeyoureyes/frontiseeyoureyes.png" alt="Lo Que Vi En Tus Ojos">
                             </div>
                             <div class="book-details">
                                 <h2>Lo Que Vi En Tus Ojos</h2>
@@ -242,7 +257,7 @@
                                 </div>
                                 <p class="book-description">Una historia cautivadora que te mantendrá leyendo hasta el
                                     final...</p>
-                                <p class="author">~ Autor</p>
+                                <p class="author">~Jose Manuel Cortes Ceron</p>
                             </div>
                         </div>
 
@@ -307,11 +322,11 @@
                 <div class="library-grid">
                     <div class="library-book-card">
                         <div class="library-book-cover">
-                            <img src="src/assets/bookiseeyoureyes.png" alt="Lo Que Vi En Tus Ojos">
+                            <img src="src/books/iseeyoureyes/frontiseeyoureyes.png" alt="Lo Que Vi En Tus Ojos">
                         </div>
                         <div class="library-book-info">
                             <h3>Lo Que Vi En Tus Ojos</h3>
-                            <p class="book-author">Jose Manuel Garcia</p>
+                            <p class="book-author">Jose Manuel Cortes Ceron</p>
                             <div class="book-progress">
                                 <div class="progress-bar">
                                     <div class="progress-fill" style="width: 0%"></div>
@@ -341,7 +356,7 @@
                 <div class="bookmarks-grid">
                     <div class="bookmark-card">
                         <div class="bookmark-cover">
-                            <img src="src/assets/bookiseeyoureyes.png" alt="Lo Que Vi En Tus Ojos">
+                            <img src="src/books/iseeyoureyes/frontiseeyoureyes.png" alt="Lo Que Vi En Tus Ojos">
                             <button class="bookmark-btn active">
                                 <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
                                     <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
@@ -351,6 +366,42 @@
                         <h4>Lo Que Vi En Tus Ojos</h4>
                         <span class="bookmark-date">Guardado el 23 Dic 2024</span>
                     </div>
+                </div>
+            </section>
+
+            <!-- Christmas Gift Details Page -->
+            <section class="page gift-details-page" id="giftDetailsPage">
+                <div class="christmas-wrapper">
+
+                    <div class="gift-content">
+                        <div class="gift-video-container">
+                            <video src="src/assets/videogift.mp4" class="gift-main-video" autoplay muted loop
+                                playsinline></video>
+                        </div>
+
+                        <div class="gift-message">
+                            <h1>🎄 ¡Feliz Navidad, Mi Amor! 🎄</h1>
+                            <div class="message-card">
+                                <p class="christmas-greeting">
+                                    En esta época tan especial, quiero recordarte lo mucho que significas para mí.
+                                    Cada momento a tu lado es un regalo, y no podría estar más agradecido de tenerte.
+                                </p>
+                                <p class="christmas-greeting">
+                                    Que esta Navidad esté llena de amor, alegría y momentos inolvidables juntos.
+                                    Eres mi mejor regalo. 💝
+                                </p>
+                                <p class="signature">Con todo mi amor,<br>~Jose🎅</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-back-home"
+                        onclick="document.getElementById('giftDetailsPage').classList.remove('active'); document.getElementById('page1').classList.add('active');">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15 18 9 12 15 6" />
+                        </svg>
+                        Volver al inicio
+                    </button>
                 </div>
             </section>
 
@@ -461,6 +512,93 @@
         </main>
     </div>
     <script src="src/js/script.js"></script>
+
+    <!-- PDF Reader Overlay -->
+    <div class="reader-overlay" id="readerOverlay">
+        <div class="reader-container">
+            <!-- Reader Header -->
+            <div class="reader-header">
+                <button class="reader-close-btn" id="closeReader">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+                <div class="reader-title">
+                    <h3>Lo Que Vi En Tus Ojos</h3>
+                    <span class="reader-page-info">Página <span id="currentPageNum">1</span> de <span
+                            id="totalPages">1</span></span>
+                </div>
+                <div class="reader-actions">
+                    <button class="download-btn" id="downloadBook">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        <span class="download-text">¿Sin internet? Descárgalo</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3D Book Container -->
+            <div class="book-3d-container">
+                <div class="book-3d" id="book3d">
+                    <!-- Front Cover -->
+                    <div class="book-page book-cover-front" id="bookCoverFront">
+                        <img src="src/books/iseeyoureyes/frontiseeyoureyes.png" alt="Portada">
+                    </div>
+
+                    <!-- PDF Canvas Pages -->
+                    <div class="book-page book-page-left" id="pageLeft">
+                        <canvas id="pdfCanvasLeft"></canvas>
+                    </div>
+                    <div class="book-page book-page-right" id="pageRight">
+                        <canvas id="pdfCanvasRight"></canvas>
+                    </div>
+
+                    <!-- Back Cover -->
+                    <div class="book-page book-cover-back" id="bookCoverBack">
+                        <img src="src/books/iseeyoureyes/backiseeyoureyes.png" alt="Contraportada">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reader Navigation -->
+            <div class="reader-navigation">
+                <button class="nav-btn nav-prev" id="prevPage">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                    <span>Anterior</span>
+                </button>
+
+                <div class="page-progress-bar">
+                    <div class="progress-track">
+                        <div class="progress-fill-reader" id="progressFillReader" style="width: 0%"></div>
+                    </div>
+                    <span class="progress-percent" id="progressPercent">0%</span>
+                </div>
+
+                <button class="nav-btn nav-next" id="nextPage">
+                    <span>Siguiente</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Toast -->
+    <div class="download-toast" id="downloadToast">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+        <span>¡Descarga completada!</span>
+    </div>
+    <script src="src/js/pdf-reader.js"></script>
 </body>
 
 </html>
