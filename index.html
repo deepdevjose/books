@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookShelf - Tu biblioteca digital</title>
+    <meta name="description" content="Descubre y lee tus libros favoritos en tu biblioteca digital personal">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="src/css/styles.css">
+</head>
+
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-container">
+            <div class="login-header">
+                <svg viewBox="0 0 40 40" class="login-logo">
+                    <path d="M20 5C15 5 10 8 10 15C10 22 15 25 20 25C25 25 30 22 30 15C30 8 25 5 20 5Z" fill="none"
+                        stroke="currentColor" stroke-width="2" />
+                    <path d="M8 30C12 25 16 23 20 23C24 23 28 25 32 30" fill="none" stroke="currentColor"
+                        stroke-width="2" />
+                    <circle cx="15" cy="14" r="2" fill="currentColor" />
+                    <circle cx="25" cy="14" r="2" fill="currentColor" />
+                </svg>
+                <h1 class="login-title">BookShelf</h1>
+                <p class="login-subtitle">Tu biblioteca digital personal</p>
+            </div>
+            <form class="login-form" id="loginForm">
+                <div class="input-group">
+                    <label for="username">Usuario</label>
+                    <div class="input-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        <input type="text" id="username" placeholder="Ingresa tu usuario" autocomplete="off">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="password">Contraseña</label>
+                    <div class="input-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                            <path d="M7 11V7a5 5 0 0110 0v4" />
+                        </svg>
+                        <input type="password" id="password" placeholder="Ingresa tu contraseña">
+                    </div>
+                </div>
+                <div class="login-error" id="loginError">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="8" x2="12" y2="12" />
+                        <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                    <span>Usuario o contraseña incorrectos</span>
+                </div>
+                <button type="submit" class="login-btn">
+                    <span>Iniciar sesión</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="app-container" id="appContainer" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <svg viewBox="0 0 40 40" class="logo-icon">
+                    <path d="M20 5C15 5 10 8 10 15C10 22 15 25 20 25C25 25 30 22 30 15C30 8 25 5 20 5Z" fill="none"
+                        stroke="currentColor" stroke-width="2" />
+                    <path d="M8 30C12 25 16 23 20 23C24 23 28 25 32 30" fill="none" stroke="currentColor"
+                        stroke-width="2" />
+                    <circle cx="15" cy="14" r="2" fill="currentColor" />
+                    <circle cx="25" cy="14" r="2" fill="currentColor" />
+                </svg>
+                <span class="logo-text">BookShelf</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-page="home">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
+                    <span class="nav-item-text">Inicio</span>
+                </a>
+                <a href="#" class="nav-item" data-page="library">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+                    </svg>
+                    <span class="nav-item-text">Biblioteca</span>
+                </a>
+                <a href="#" class="nav-item" data-page="bookmarks">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+                    </svg>
+                    <span class="nav-item-text">Favoritos</span>
+                </a>
+                <a href="#" class="nav-item" data-page="settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+                    </svg>
+                    <span class="nav-item-text">Ajustes</span>
+                </a>
+            </nav>
+            <div class="sidebar-bottom">
+                <button class="menu-toggle" id="menuToggle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="menu-icon">
+                        <line x1="3" y1="12" x2="21" y2="12" />
+                        <line x1="3" y1="6" x2="21" y2="6" />
+                        <line x1="3" y1="18" x2="21" y2="18" />
+                    </svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="close-icon"
+                        style="display: none;">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="search-bar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <input type="text" placeholder="Buscar libro, autor, edición...">
+                </div>
+                <div class="user-profile">
+                    <span class="user-name">Xochitl Marquez Contreras</span>
+                    <div class="user-avatar">
+                        <img src="src/assets/icon.jpg" alt="User Avatar">
+                    </div>
+                    <button class="notification-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                            <path d="M13.73 21a2 2 0 01-3.46 0" />
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Page 1: Keep the story going -->
+            <section class="page page-1 active" id="page1">
+                <div class="content-grid">
+                    <div class="left-section">
+                        <h1 class="main-title">Continúa la historia..</h1>
+                        <p class="subtitle">No dejes que la historia termine todavía. Continúa leyendo tu último libro y
+                            sumérgete en el mundo de la literatura.</p>
+                        <button class="btn-primary">
+                            Comenzar a leer
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Book Carousel -->
+                <div class="books-section">
+                    <div class="books-carousel">
+                        <div class="book-card featured" id="mainBookCard" style="cursor: pointer;">
+                            <div class="book-cover">
+                                <img src="src/assets/bookiseeyoureyes.png" alt="I See Your Eyes">
+                            </div>
+                            <h4>Lo Que Vi En Tus Ojos</h4>
+                        </div>
+                    </div>
+                    <div class="carousel-footer">
+                        <p class="collection-notice">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="8" x2="12" y2="12" />
+                                <line x1="12" y1="16" x2="12.01" y2="16" />
+                            </svg>
+                            Pronto verás un<a href="#">nuevo libro.</a> ¡Es una lectura obligada,
+                            no te lo vayas a perder amorcito!
+                        </p>
+                        <div class="book-counter">
+                            <span class="current">01</span> / 1 libros
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page 2: Happy Reading -->
+            <section class="page page-2" id="page2">
+                <div class="content-grid-2">
+                    <div class="left-section-2">
+                        <h1 class="greeting">Feliz lectura,<br><span>Xochitl</span></h1>
+                        <p class="reading-prompt">¡Vaya! Te has sumergido profundamente en los secretos del mundo.
+                            ¿Ya llegaste al mejor capítulo? ¡Ups, parece que aún no! ¡Sigue leyendo!</p>
+                        <button class="btn-primary">
+                            Comenzar a leer
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg>
+                        </button>
+
+                        <!-- New Series Collection -->
+                        <div class="new-series">
+                            <h3>Nueva Colección</h3>
+                            <div class="series-item">
+                                <img src="src/assets/bookiseeyoureyes.png" alt="I See Your Eyes">
+                                <div class="series-info">
+                                    <h4>Lo Que Vi En Tus Ojos</h4>
+                                    <span>1 capítulo</span>
+                                </div>
+                                <span class="vol-count">1 vol</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-section-2">
+                        <!-- Current Book -->
+                        <div class="current-book-card">
+                            <div class="book-3d">
+                                <img src="src/assets/bookiseeyoureyes.png" alt="I See Your Eyes">
+                            </div>
+                            <div class="book-details">
+                                <h2>Lo Que Vi En Tus Ojos</h2>
+                                <div class="progress-info">
+                                    <span class="pages-read">0</span> / 300 páginas
+                                </div>
+                                <p class="book-description">Una historia cautivadora que te mantendrá leyendo hasta el
+                                    final...</p>
+                                <p class="author">~ Autor</p>
+                            </div>
+                        </div>
+
+                        <!-- Schedule Reading -->
+                        <div class="schedule-section">
+                            <div class="section-header">
+                                <h3>Programar Lectura</h3>
+                                <div class="calendar-nav">
+                                    <button class="nav-arrow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 18 9 12 15 6" />
+                                        </svg>
+                                    </button>
+                                    <button class="nav-arrow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="9 18 15 12 9 6" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="calendar-week">
+                                <div class="day">
+                                    <span class="day-name">Dom</span>
+                                    <span class="day-number">11</span>
+                                </div>
+                                <div class="day">
+                                    <span class="day-name">Lun</span>
+                                    <span class="day-number">12</span>
+                                </div>
+                                <div class="day active">
+                                    <span class="day-name">Mar</span>
+                                    <span class="day-number">13</span>
+                                </div>
+                                <div class="day">
+                                    <span class="day-name">Mié</span>
+                                    <span class="day-number">14</span>
+                                </div>
+                                <div class="day">
+                                    <span class="day-name">Jue</span>
+                                    <span class="day-number">15</span>
+                                </div>
+                                <div class="day">
+                                    <span class="day-name">Vie</span>
+                                    <span class="day-number">16</span>
+                                </div>
+                                <div class="day">
+                                    <span class="day-name">Sáb</span>
+                                    <span class="day-number">17</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Library Page: Todos los Libros -->
+            <section class="page library-page" id="libraryPage">
+                <div class="page-header">
+                    <h1 class="page-title">Mi Biblioteca</h1>
+                    <p class="page-subtitle">Todos tus libros en un solo lugar</p>
+                </div>
+                <div class="library-grid">
+                    <div class="library-book-card">
+                        <div class="library-book-cover">
+                            <img src="src/assets/bookiseeyoureyes.png" alt="Lo Que Vi En Tus Ojos">
+                        </div>
+                        <div class="library-book-info">
+                            <h3>Lo Que Vi En Tus Ojos</h3>
+                            <p class="book-author">Jose Manuel Garcia</p>
+                            <div class="book-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <span>0% completado</span>
+                            </div>
+                            <button class="btn-secondary">Continuar leyendo</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="empty-state" style="display: none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+                    </svg>
+                    <h3>Tu biblioteca está vacía</h3>
+                    <p>Agrega libros para comenzar tu colección</p>
+                </div>
+            </section>
+
+            <!-- Bookmarks Page: Libros Guardados -->
+            <section class="page bookmarks-page" id="bookmarksPage">
+                <div class="page-header">
+                    <h1 class="page-title">Mis Favoritos</h1>
+                    <p class="page-subtitle">Libros que has guardado para leer después</p>
+                </div>
+                <div class="bookmarks-grid">
+                    <div class="bookmark-card">
+                        <div class="bookmark-cover">
+                            <img src="src/assets/bookiseeyoureyes.png" alt="Lo Que Vi En Tus Ojos">
+                            <button class="bookmark-btn active">
+                                <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <h4>Lo Que Vi En Tus Ojos</h4>
+                        <span class="bookmark-date">Guardado el 23 Dic 2024</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Page: Configuración -->
+            <section class="page settings-page" id="settingsPage">
+                <div class="page-header">
+                    <h1 class="page-title">Configuración</h1>
+                    <p class="page-subtitle">Personaliza tu experiencia de lectura</p>
+                </div>
+                <div class="settings-sections">
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                            Perfil
+                        </h3>
+                        <div class="settings-card">
+                            <div class="profile-settings">
+                                <div class="profile-avatar-large">
+                                    <img src="src/assets/icon.jpg" alt="Avatar">
+                                </div>
+                                <div class="profile-info-edit">
+                                    <div class="setting-item">
+                                        <label>Nombre</label>
+                                        <input type="text" value="Xochitl Marquez Contreras" readonly>
+                                    </div>
+                                    <div class="setting-item">
+                                        <label>Usuario</label>
+                                        <input type="text" value="Ojitos Bonitos" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="5" />
+                                <line x1="12" y1="1" x2="12" y2="3" />
+                                <line x1="12" y1="21" x2="12" y2="23" />
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                                <line x1="1" y1="12" x2="3" y2="12" />
+                                <line x1="21" y1="12" x2="23" y2="12" />
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                            </svg>
+                            Apariencia
+                        </h3>
+                        <div class="settings-card">
+                            <div class="setting-item">
+                                <span>Tema oscuro</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="darkModeToggle">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Tamaño de fuente</span>
+                                <select id="fontSizeSelect">
+                                    <option value="small">Pequeño</option>
+                                    <option value="medium" selected>Mediano</option>
+                                    <option value="large">Grande</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                                <path d="M13.73 21a2 2 0 01-3.46 0" />
+                            </svg>
+                            Notificaciones
+                        </h3>
+                        <div class="settings-card">
+                            <div class="setting-item">
+                                <span>Recordatorios de lectura</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Nuevos libros disponibles</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <button class="btn-logout"
+                            onclick="sessionStorage.removeItem('isLoggedIn'); location.reload();">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                                <polyline points="16 17 21 12 16 7" />
+                                <line x1="21" y1="12" x2="9" y2="12" />
+                            </svg>
+                            Cerrar sesión
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="src/js/script.js"></script>
+</body>
+
+</html>
