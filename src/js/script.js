@@ -682,21 +682,30 @@ startReadingBtns.forEach(btn => {
  * Initialize read buttons to open PDF reader
  */
 function initReadButtons() {
-    // All "Start reading" and "Continue reading" buttons
-    const readButtons = document.querySelectorAll('.btn-primary, .btn-secondary');
+    // Dashboard button - navigate to library page
+    const dashboardBtn = document.getElementById('dashboardReadBtn');
+    if (dashboardBtn) {
+        dashboardBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Navigate to library page and update sidebar
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('libraryPage').classList.add('active');
+            // Update sidebar active state
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            document.querySelector('[data-page="library"]')?.classList.add('active');
+        });
+    }
 
-    readButtons.forEach(btn => {
-        const buttonText = btn.textContent.toLowerCase();
-        if (buttonText.includes('leer') || buttonText.includes('reading')) {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                // Open the PDF reader (function from pdf-reader.js)
-                if (typeof openReader === 'function') {
-                    openReader();
-                }
-            });
-        }
-    });
+    // Book details page button - open PDF reader
+    const openPdfBtn = document.getElementById('openPdfBtn');
+    if (openPdfBtn) {
+        openPdfBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (typeof openReader === 'function') {
+                openReader();
+            }
+        });
+    }
 }
 
 console.log('📚 BookShelf App initialized successfully!');

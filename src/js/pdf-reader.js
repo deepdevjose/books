@@ -138,16 +138,21 @@ async function renderPage(pageNum) {
     try {
         const page = await pdfDoc.getPage(pageNum);
 
-        // Calculate scale to fit container
-        const container = document.querySelector('.book-3d');
+        // Calculate scale to fit container - single page mode for maximum size
+        const container = document.querySelector('.book-3d-container');
+        const containerWidth = container?.offsetWidth || 800;
         const containerHeight = container?.offsetHeight || 600;
+
         const viewport = page.getViewport({ scale: 1 });
-        const desiredHeight = containerHeight * 0.9;
-        scale = desiredHeight / viewport.height;
+
+        // Calculate scale to fit the full available space (single page)
+        const widthScale = (containerWidth - 40) / viewport.width;
+        const heightScale = (containerHeight - 40) / viewport.height;
+        scale = Math.min(widthScale, heightScale);
 
         const scaledViewport = page.getViewport({ scale });
 
-        // Render to left canvas (or right for spread view)
+        // Render to a single canvas
         const canvasLeft = document.getElementById('pdfCanvasLeft');
         const ctxLeft = canvasLeft.getContext('2d');
 
@@ -159,24 +164,8 @@ async function renderPage(pageNum) {
             viewport: scaledViewport
         }).promise;
 
-        // If there's a next page, render it on the right
-        if (pageNum < totalPages) {
-            const nextPage = await pdfDoc.getPage(pageNum + 1);
-            const canvasRight = document.getElementById('pdfCanvasRight');
-            const ctxRight = canvasRight.getContext('2d');
-
-            canvasRight.width = scaledViewport.width;
-            canvasRight.height = scaledViewport.height;
-
-            await nextPage.render({
-                canvasContext: ctxRight,
-                viewport: scaledViewport
-            }).promise;
-
-            document.getElementById('pageRight').style.display = 'flex';
-        } else {
-            document.getElementById('pageRight').style.display = 'none';
-        }
+        // Hide the right page in single page mode
+        document.getElementById('pageRight').style.display = 'none';
 
         // Update page number display
         document.getElementById('currentPageNum').textContent = pageNum;
@@ -206,8 +195,7 @@ async function goToPrevPage() {
 
     setTimeout(async () => {
         pageLeft.classList.remove('flipping-right');
-        currentPage -= 2; // Go back 2 pages (spread view)
-        if (currentPage < 1) currentPage = 1;
+        currentPage -= 1; // Go back 1 page
         await renderPage(currentPage);
         updateNavButtons();
     }, 300);
@@ -220,13 +208,12 @@ async function goToNextPage() {
     if (currentPage >= totalPages) return;
 
     // Page flip animation
-    const pageRight = document.getElementById('pageRight');
-    pageRight.classList.add('flipping-left');
+    const pageLeft = document.getElementById('pageLeft');
+    pageLeft.classList.add('flipping-left');
 
     setTimeout(async () => {
-        pageRight.classList.remove('flipping-left');
-        currentPage += 2; // Go forward 2 pages (spread view)
-        if (currentPage > totalPages) currentPage = totalPages;
+        pageLeft.classList.remove('flipping-left');
+        currentPage += 1; // Go forward 1 page
         await renderPage(currentPage);
         updateNavButtons();
     }, 300);

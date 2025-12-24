@@ -2376,10 +2376,11 @@ img {
 
 .reader-container {
     width: 100%;
+    max-width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: var(--spacing-lg);
+    padding: var(--spacing-sm);
 }
 
 /* Reader Header */
@@ -2503,14 +2504,16 @@ img {
     justify-content: center;
     perspective: 2000px;
     overflow: hidden;
+    padding: 0;
+    margin: 0;
 }
 
-.book-3d {
+#readerOverlay .book-3d {
     position: relative;
     width: 100%;
-    max-width: 900px;
-    height: 80vh;
-    max-height: 700px;
+    max-width: 95vw;
+    height: 85vh;
+    max-height: none;
     display: flex;
     transform-style: preserve-3d;
     transition: transform 0.6s ease;
@@ -2521,15 +2524,18 @@ img {
 }
 
 .book-page {
-    position: absolute;
-    width: 50%;
+    position: relative;
+    width: auto;
     height: 100%;
+    max-height: 90vh;
     background-color: #f5f0e8;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: var(--radius-md);
+    transition: transform 0.4s ease;
 }
 
 .book-page canvas {
@@ -2544,16 +2550,51 @@ img {
     object-fit: cover;
 }
 
+/* Single page mode - center the page */
 .book-page-left {
-    left: 0;
-    border-radius: var(--radius-md) 0 0 var(--radius-md);
-    transform-origin: right center;
+    margin: 0 auto;
+    transform-origin: center center;
 }
 
 .book-page-right {
-    right: 0;
-    border-radius: 0 var(--radius-md) var(--radius-md) 0;
-    transform-origin: left center;
+    display: none;
+}
+
+/* Page flip animations */
+.book-page.flipping-left {
+    animation: flipLeft 0.4s ease;
+}
+
+.book-page.flipping-right {
+    animation: flipRight 0.4s ease;
+}
+
+@keyframes flipLeft {
+    0% {
+        transform: perspective(1000px) rotateY(0deg);
+    }
+
+    50% {
+        transform: perspective(1000px) rotateY(-90deg);
+    }
+
+    100% {
+        transform: perspective(1000px) rotateY(0deg);
+    }
+}
+
+@keyframes flipRight {
+    0% {
+        transform: perspective(1000px) rotateY(0deg);
+    }
+
+    50% {
+        transform: perspective(1000px) rotateY(90deg);
+    }
+
+    100% {
+        transform: perspective(1000px) rotateY(0deg);
+    }
 }
 
 .book-cover-front,
