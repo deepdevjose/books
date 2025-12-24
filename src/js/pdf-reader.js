@@ -31,6 +31,10 @@ function initPDFReader() {
     const prevPageBtn = document.getElementById('prevPage');
     const nextPageBtn = document.getElementById('nextPage');
     const downloadBtn = document.getElementById('downloadBook');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const zoomInBtn = document.getElementById('zoomIn');
+    const zoomOutBtn = document.getElementById('zoomOut');
+    const pdfContainer = document.getElementById('pdfContainer');
 
     if (!readerOverlay) return;
 
@@ -43,6 +47,20 @@ function initPDFReader() {
 
     // Download
     downloadBtn?.addEventListener('click', downloadBook);
+
+    // Fullscreen
+    fullscreenBtn?.addEventListener('click', toggleFullscreen);
+
+    // Zoom controls
+    zoomInBtn?.addEventListener('click', zoomIn);
+    zoomOutBtn?.addEventListener('click', zoomOut);
+
+    // Zoom lens on hover
+    if (pdfContainer) {
+        pdfContainer.addEventListener('mousemove', handleZoomLens);
+        pdfContainer.addEventListener('mouseenter', showZoomLens);
+        pdfContainer.addEventListener('mouseleave', hideZoomLens);
+    }
 
     // Keyboard navigation
     document.addEventListener('keydown', handleKeyNavigation);
@@ -116,6 +134,10 @@ async function loadPDF() {
         // Update total pages display
         document.getElementById('totalPages').textContent = totalPages;
 
+        // Validate current page is within bounds
+        if (currentPage < 1) currentPage = 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+
         // Render current page
         await renderPage(currentPage);
 
@@ -152,12 +174,24 @@ async function renderPage(pageNum) {
 
         const scaledViewport = page.getViewport({ scale });
 
-        // Render to a single canvas
+        // Render to a single canvas with high DPI support
         const canvasLeft = document.getElementById('pdfCanvasLeft');
         const ctxLeft = canvasLeft.getContext('2d');
 
-        canvasLeft.width = scaledViewport.width;
-        canvasLeft.height = scaledViewport.height;
+        // Use devicePixelRatio for sharp rendering on mobile/retina displays
+        const pixelRatio = window.devicePixelRatio || 1;
+        const outputScale = pixelRatio > 1 ? pixelRatio : 1.5; // Minimum 1.5x for quality
+
+        // Set canvas size at higher resolution
+        canvasLeft.width = Math.floor(scaledViewport.width * outputScale);
+        canvasLeft.height = Math.floor(scaledViewport.height * outputScale);
+
+        // Scale canvas display size via CSS
+        canvasLeft.style.width = `${scaledViewport.width}px`;
+        canvasLeft.style.height = `${scaledViewport.height}px`;
+
+        // Scale context to match
+        ctxLeft.scale(outputScale, outputScale);
 
         await page.render({
             canvasContext: ctxLeft,
@@ -247,15 +281,27 @@ function updateNavButtons() {
 }
 
 /**
- * Update reader progress bar
+ * Update reader progress bar (vertical in sidebar)
  */
 function updateReaderProgress() {
     const progressFill = document.getElementById('progressFillReader');
     const progressPercent = document.getElementById('progressPercent');
+    const currentPageNum2 = document.getElementById('currentPageNum2');
+    const totalPages2 = document.getElementById('totalPages2');
+    const zoomLevel = document.getElementById('zoomLevel');
 
     const percent = Math.round((currentPage / totalPages) * 100);
-    progressFill.style.width = `${percent}%`;
-    progressPercent.textContent = `${percent}%`;
+
+    // Update vertical progress bar (height instead of width)
+    if (progressFill) progressFill.style.height = `${percent}%`;
+    if (progressPercent) progressPercent.textContent = `${percent}%`;
+
+    // Update sidebar page indicators
+    if (currentPageNum2) currentPageNum2.textContent = currentPage;
+    if (totalPages2) totalPages2.textContent = totalPages;
+
+    // Update zoom level display
+    if (zoomLevel) zoomLevel.textContent = `${Math.round(scale * 100)}%`;
 }
 
 /**
@@ -344,6 +390,88 @@ function downloadBook() {
             downloadToast.classList.remove('show');
         }, 3000);
     }, 1000);
+}
+
+/**
+ * Toggle fullscreen mode
+ */
+function toggleFullscreen() {
+    const readerOverlay = document.getElementById('readerOverlay');
+
+    if (!document.fullscreenElement) {
+        readerOverlay.requestFullscreen().catch(err => {
+            console.log('Fullscreen not supported:', err);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+/**
+ * Zoom in the PDF
+ */
+function zoomIn() {
+    if (scale < 3) {
+        scale += 0.25;
+        renderPage(currentPage);
+    }
+}
+
+/**
+ * Zoom out the PDF
+ */
+function zoomOut() {
+    if (scale > 0.5) {
+        scale -= 0.25;
+        renderPage(currentPage);
+    }
+}
+
+/**
+ * Show zoom lens
+ */
+function showZoomLens() {
+    const zoomLens = document.getElementById('zoomLens');
+    if (zoomLens) zoomLens.classList.add('active');
+}
+
+/**
+ * Hide zoom lens
+ */
+function hideZoomLens() {
+    const zoomLens = document.getElementById('zoomLens');
+    if (zoomLens) zoomLens.classList.remove('active');
+}
+
+/**
+ * Handle zoom lens movement
+ */
+function handleZoomLens(e) {
+    const zoomLens = document.getElementById('zoomLens');
+    const canvas = document.getElementById('pdfCanvasLeft');
+
+    if (!zoomLens || !canvas) return;
+
+    const container = document.getElementById('pdfContainer');
+    const rect = container.getBoundingClientRect();
+    const canvasRect = canvas.getBoundingClientRect();
+
+    // Position the lens
+    const lensSize = 150;
+    const x = e.clientX - rect.left - lensSize / 2;
+    const y = e.clientY - rect.top - lensSize / 2;
+
+    zoomLens.style.left = `${x}px`;
+    zoomLens.style.top = `${y}px`;
+
+    // Calculate zoom background
+    const zoomFactor = 2;
+    const bgX = (e.clientX - canvasRect.left) * zoomFactor;
+    const bgY = (e.clientY - canvasRect.top) * zoomFactor;
+
+    zoomLens.style.backgroundImage = `url(${canvas.toDataURL()})`;
+    zoomLens.style.backgroundSize = `${canvas.width * zoomFactor}px ${canvas.height * zoomFactor}px`;
+    zoomLens.style.backgroundPosition = `-${bgX - lensSize / 2}px -${bgY - lensSize / 2}px`;
 }
 
 /**
